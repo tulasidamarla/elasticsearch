@@ -139,17 +139,124 @@ Elastic search API
 			"_primary_term": 1
 		  }
 
-- Retrieving documents from Elastic search by Id
+- TODO:Retrieving documents from Elastic search by Id
+- TODO:Retrieving whole and partial documents
+- TODO:Updating whole and partial documents
+- TODO:Deleting Documents and indices
+- TODO:Performing Bulk operations on Documents
+- TODO:Bulk Indexing of Documents from a JSON File
 
+Query DSL
+-
+- ES uses Query DSL to expose most of the power of lucene through a simple json interface.
+- These queries are most useful in production due to their flexibility, easier to read and debug.
+- ES search works with two contexts namely Query context and Filter context.
+  - Query context
+    - Included or Not: Query context determines whether the document should be part of the result or not.
+    - Relevance score: Calcuated for every search term the document maps to. Higher the score, more relevant the document.
+  - Filter context
+	- Included or Not: Works the same wasy as in Query context.
+	- No scoring: No additional relevance ranking.
+	- Structured data: Filter context is more suitable for exact matches, range queries(like date ranges, price ranges) etc.
+	- Faster: Only determines included or not, no relevance score is calculate, hence it is faster. 
+- Setup Json test data 
+  - Visit https://www.json-generator.com/ to create test data.
+  - The following test data template is used for generating data with 1000 documents.
+  
+	  [
+	  '{{repeat(1000, 1000)}}',
+	  {
+		name:'{{firstName()}} {{surname()}}',
+		age: '{{integer(18, 25)}}',
+		gender: '{{gender()}}',
+		email: '{{email()}}',
+		phone: '+1 {{phone()}}',
+		street: '{{integer(1000, 999)}} {{street()}}',
+		city: '{{city()}}',
+		state: '{{state()}} {{integer(100, 10000)}}'
+	  }
+	 ]
+    
+  - Click generate to generate the json and compact the json into a single line.
+  - Remove the starting and ending square brackets and replace the characters },{ with }\n{ to get each seperate json documents as needed by ES.
+  - Setting the index field
+    - For ES to set index field to each document, document should have an additional index document for each index. i.e. `{"index":{}}`.
+    - To setup index field, replace `{"name"` with `{"index": {}}\n{"name"`
+	- Now the file is ready for bulk indexing. Let's save the file as test_data.json
+  - To bulk index the documents by creating a new index with name `customers` and type `customer` use the below command.
+  
+		curl -H "Content-Type: application/x-ndjson" -XPOST "http://localhost:9200/customers/customer/_bulk?pretty&refresh" --data-binary @"test_data.json"
 
+- Search Using Query params
+  - Query Context search
+    - Search terms can be passed as URL query parameters or within the URL request body.
+	- Query parameters
+	  - Search requests are peformed either through curl or through a browser.
+	  - Examples : 
+	    - To search for documents with in the customers index which contain the word `wyoming` URL is `http://localhost:9200/customers/_search?q=wyoming`.
+		- Response fields
+		  - `took` represents time taken to perform the search in milliseconds.
+		  - `_shards` represents the no of total shards and successful or failed search counts.
+		  - `hits` fields contains the important search results.
+		     - `total` represents the no of total documents that match the search.
+		     - `max_score` represents the max relevant score.
+		     - nested `hits` field represents each document hit details.
+		
+			{
+				"took": 82,
+				"timed_out": false,
+				"_shards": {
+					"total": 5,
+					"successful": 5,
+					"skipped": 0,
+					"failed": 0
+				},
+				"hits": {
+					"total": 18,
+					"max_score": 4.9028025,
+					"hits": [
+					{
+						"_index": "customers",
+						"_type": "customer",
+						"_id": "vVIsXHIBeIe72XxDmQRZ",
+						"_score": 4.9028025,
+						"_source": {
+							"name": "Sloan Munoz",
+							"age": 24,
+							"gender": "male",
+							"email": "sloanmunoz@stralum.com",
+							"phone": "+1 (988) 550-3781",
+							"street": "1000 Garfield Place",
+							"city": "Wyoming",
+							"state": "Arkansas 8347"
+						}
+					},
+					{
+						"_index": "customers",
+						"_type": "customer",
+						"_id": "nVIsXHIBeIe72XxDmQRZ",
+						"_score": 4.646152,
+						"_source": {
+							"name": "Bolton Roach",
+							"age": 21,
+							"gender": "male",
+							"email": "boltonroach@stralum.com",
+							"phone": "+1 (819) 421-3155",
+							"street": "1000 Herkimer Court",
+							"city": "Dunnavant",
+							"state": "Wyoming 9077"
+						}
+					}]
+				}
+			}
 
-
-
-
-
-
-
-
+        - To search for documents with search term `wyoming` and descending order of age, `http://localhost:9200/customers/_search?q=wyoming&sort=age:desc`.
+		  - The response for this query will not have relevance score. Due to sorting of results relevance score no longer applies.
+		- To search for documents with search term `kentucky` in `state` field `http://localhost:9200/customers/_search?q=state:kentucky&sort=age:desc`.
+		- To get the subset of search results `http://localhost:9200/customers/_search?q=state:kentucky&from=10&size=2`
+		  - `from` & `size` are useful for pagination.
+		- `explain` query parameter gives the information about how the relevance score is calculated, which is useful for debugging purposes.
+		  - `http://localhost:9200/customers/_search?q=state:kentucky&from=10&size=2&explain`
 
 
 
