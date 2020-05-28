@@ -248,8 +248,8 @@ Query DSL
 					"state": "Wyoming 9077"
 				}
 			}]
+		  }
 		}
-	}
 
 
         
