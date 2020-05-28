@@ -203,53 +203,53 @@ Query DSL
 		     - nested `hits` field represents each document hit details.
 		
 			
+	{
+		"took": 82,
+		"timed_out": false,
+		"_shards": {
+			"total": 5,
+			"successful": 5,
+			"skipped": 0,
+			"failed": 0
+		},
+		"hits": {
+			"total": 18,
+			"max_score": 4.9028025,
+			"hits": [
 			{
-				"took": 82,
-				"timed_out": false,
-				"_shards": {
-					"total": 5,
-					"successful": 5,
-					"skipped": 0,
-					"failed": 0
-				},
-				"hits": {
-					"total": 18,
-					"max_score": 4.9028025,
-					"hits": [
-					{
-						"_index": "customers",
-						"_type": "customer",
-						"_id": "vVIsXHIBeIe72XxDmQRZ",
-						"_score": 4.9028025,
-						"_source": {
-							"name": "Sloan Munoz",
-							"age": 24,
-							"gender": "male",
-							"email": "sloanmunoz@stralum.com",
-							"phone": "+1 (988) 550-3781",
-							"street": "1000 Garfield Place",
-							"city": "Wyoming",
-							"state": "Arkansas 8347"
-						}
-					},
-					{
-						"_index": "customers",
-						"_type": "customer",
-						"_id": "nVIsXHIBeIe72XxDmQRZ",
-						"_score": 4.646152,
-						"_source": {
-							"name": "Bolton Roach",
-							"age": 21,
-							"gender": "male",
-							"email": "boltonroach@stralum.com",
-							"phone": "+1 (819) 421-3155",
-							"street": "1000 Herkimer Court",
-							"city": "Dunnavant",
-							"state": "Wyoming 9077"
-						}
-					}]
+				"_index": "customers",
+				"_type": "customer",
+				"_id": "vVIsXHIBeIe72XxDmQRZ",
+				"_score": 4.9028025,
+				"_source": {
+					"name": "Sloan Munoz",
+					"age": 24,
+					"gender": "male",
+					"email": "sloanmunoz@stralum.com",
+					"phone": "+1 (988) 550-3781",
+					"street": "1000 Garfield Place",
+					"city": "Wyoming",
+					"state": "Arkansas 8347"
 				}
-			}
+			},
+			{
+				"_index": "customers",
+				"_type": "customer",
+				"_id": "nVIsXHIBeIe72XxDmQRZ",
+				"_score": 4.646152,
+				"_source": {
+					"name": "Bolton Roach",
+					"age": 21,
+					"gender": "male",
+					"email": "boltonroach@stralum.com",
+					"phone": "+1 (819) 421-3155",
+					"street": "1000 Herkimer Court",
+					"city": "Dunnavant",
+					"state": "Wyoming 9077"
+				}
+			}]
+		}
+	}
 
 
         - To search for documents with search term `wyoming` and descending order of age, `http://localhost:9200/customers/_search?q=wyoming&sort=age:desc`.
