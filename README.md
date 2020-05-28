@@ -202,6 +202,7 @@ Query DSL
 		     - `max_score` represents the max relevant score.
 		     - nested `hits` field represents each document hit details.
 		
+			
 			{
 				"took": 82,
 				"timed_out": false,
@@ -249,6 +250,7 @@ Query DSL
 					}]
 				}
 			}
+
 
         - To search for documents with search term `wyoming` and descending order of age, `http://localhost:9200/customers/_search?q=wyoming&sort=age:desc`.
 		  - The response for this query will not have relevance score. Due to sorting of results relevance score no longer applies.
