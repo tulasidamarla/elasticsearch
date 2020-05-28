@@ -203,7 +203,7 @@ Query DSL
 		     - nested `hits` field represents each document hit details.
 		
 			
-	{
+		{
 		"took": 82,
 		"timed_out": false,
 		"_shards": {
@@ -252,7 +252,9 @@ Query DSL
 	}
 
 
-        - To search for documents with search term `wyoming` and descending order of age, `http://localhost:9200/customers/_search?q=wyoming&sort=age:desc`.
+        
+	
+	- To search for documents with search term `wyoming` and descending order of age, `http://localhost:9200/customers/_search?q=wyoming&sort=age:desc`.
 		  - The response for this query will not have relevance score. Due to sorting of results relevance score no longer applies.
 		- To search for documents with search term `kentucky` in `state` field `http://localhost:9200/customers/_search?q=state:kentucky&sort=age:desc`.
 		- To get the subset of search results `http://localhost:9200/customers/_search?q=state:kentucky&from=10&size=2`
