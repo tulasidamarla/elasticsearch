@@ -1,9 +1,5 @@
-# elasticsearch
+# Elastic search(ES)
 
-# Elastic search
-
-Elastic Search(ES)
--
 - Lucene is the search library. It doesn't provide crawling and parsing capabilities for documents.
 - ES is an open source search and analytics engine, written in java and built on top of lucene.
 - Features
